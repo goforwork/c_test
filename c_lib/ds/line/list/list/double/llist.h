@@ -7,8 +7,8 @@
 typedef struct LLIST_NODE_ST
 {
     void *data;
-    LLIST_NODE_ST *next;
-    LLIST_NODE_ST *prev;
+    struct LLIST_NODE_ST *next;
+    struct LLIST_NODE_ST *prev;
 } LLIST_NODE;
 
 
@@ -19,6 +19,13 @@ typedef struct LLIST_ST
     LLIST_NODE head;
 } LLIST;
 
+// callback:show
+typedef void llist_call_show(void *);
+typedef void llist_call_op(void *, void *);
+
+// callback:compare
+typedef int llist_call_cmp(const void *, const void *);
+
 // create head node of link list
 LLIST *llist_create(int);
 
@@ -26,19 +33,19 @@ LLIST *llist_create(int);
 int llist_insert(LLIST *, void *, int mode);
 
 // find
-void *llist_find(LLIST *, void *key, void *cmp);
+void *llist_find(LLIST *, void *src, void *tar, llist_call_cmp *cmp);
 
 // update
 int llist_update(LLIST *, void *key, void *change);
 
 // del
-int llist_del(LLIST *, void *key, void *cmp);
+int llist_del(LLIST *, void *key, llist_call_cmp *cmp);
 
 // fetch
-int llist_fetch(LLIST *, void *key, void *cmp);
+int llist_fetch(LLIST *, void *key, llist_call_cmp *cmp, void **data);
 
 // show
-void llist_show(LLIST *, void *show);
+void llist_show(LLIST *, llist_call_show *show);
 
 // destroy link list
 void llist_destroy(LLIST *);
